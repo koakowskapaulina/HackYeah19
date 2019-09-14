@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using HackYeah.Models;
+using HackYeah.Services;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -17,6 +18,12 @@ namespace HackYeah.Controllers
     {
         private static readonly HttpClient client = new HttpClient();
 
+        IAuthenticationService _authenticationService;
+        public AirportsController(IAuthenticationService authenticationService)
+        {
+            _authenticationService = authenticationService;
+        }
+              
         // GET api/values
         [HttpGet]
         public async Task<AirportsInCountries> GetAsync()
@@ -110,6 +117,10 @@ namespace HackYeah.Controllers
 
             //return model;
 
+            var token = _authenticationService.GetToken();
+
+
+            return new string[] { "mati", "lotnisko szopena" };
         }
 
         // GET api/values/5
