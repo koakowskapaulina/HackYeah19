@@ -16,56 +16,65 @@ namespace HackYeah.Controllers
 {
     [Route("dej/lotniska")]
     public class AirportsController : Controller
-    {
-        private static readonly HttpClient client = new HttpClient();
-
+    {        
+        private List<AirportsInCountries> _processedCountries = null;
+        
         IAuthenticationService _authenticationService;
-        public AirportsController(IAuthenticationService authenticationService)
+        ICountryService _countryService;
+
+        public AirportsController(IAuthenticationService authenticationService, ICountryService countryService)
         {
             _authenticationService = authenticationService;
+            _countryService = countryService;
         }
               
         // GET api/values
         [HttpGet]
         public string GetAsync()
         {
-            const string url = "https://api.lot.com/flights-dev/v2";
-             var token = _authenticationService.GetToken();
+            if (_processedCountries == null)
+            {
+                const string url = "https://api.lot.com/flights-dev/v2";
+                var token = _authenticationService.GetToken();
 
-            var client = new RestClient(url);
-            var request = new RestRequest("common/airports/get");
-            request.AddHeader("content-type", "application/json");
-            request.AddHeader("X-Api-Key", "9YFNNKS31u9gCFKPetPWdAAjEXnED0B3K18AeYgg");
-            request.AddHeader("Authorization", "Bearer "+token);
-            request.AddJsonBody(new { secret_key = "2przp49a52" });
-            var response = client.Get<AirportsInCountries>(request);
+                var client = new RestClient(url);
+                var request = new RestRequest("common/airports/get");
+                request.AddHeader("content-type", "application/json");
+                request.AddHeader("X-Api-Key", "9YFNNKS31u9gCFKPetPWdAAjEXnED0B3K18AeYgg");
+                request.AddHeader("Authorization", "Bearer " + token);
+                request.AddJsonBody(new { secret_key = "2przp49a52" });
+                var response = client.Get<AirportsInCountries>(request);
 
-            return response.Content;
+                var countries = JsonConvert.DeserializeObject<List<AirportsInCountries>>(response.Content);
+                _processedCountries = _countryService.ProcessCityTags(countries);
+            }                       
+
+            return JsonConvert.SerializeObject(_processedCountries);
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value1";
-        }
+        //// GET api/values/5
+        //[HttpGet("{id}")]
+        //public string Get(int id)
+        //{
+        //    return "value1";
+        //}
 
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody]string value)
-        {
-        }
+        //// POST api/values
+        //[HttpPost]
+        //public void Post([FromBody]string value)
+        //{
+        //}
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
+        //// PUT api/values/5
+        //[HttpPut("{id}")]
+        //public void Put(int id, [FromBody]string value)
+        //{
+        //}
 
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        //// DELETE api/values/5
+        //[HttpDelete("{id}")]
+        //public void Delete(int id)
+        //{
+        //}
     }
 }

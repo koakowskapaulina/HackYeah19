@@ -30,6 +30,7 @@ namespace HackYeah
 
             var builder = new ContainerBuilder();
             builder.RegisterType<AuthenticationService>().As<IAuthenticationService>();
+            builder.RegisterType<CountryService>().As<ICountryService>();
             //builder.RegisterType<x>().As<Ix>();
 
             builder.Populate(services);
