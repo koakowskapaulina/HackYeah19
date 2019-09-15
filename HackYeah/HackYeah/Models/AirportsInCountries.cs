@@ -8,6 +8,7 @@ namespace HackYeah.Models
     public class AirportsInCountries
     {
         public string country { get; set; }
+        public int countryOrderNumber { get; set; }
         public List<Airports> cities;
         
         public AirportsInCountries()
@@ -24,6 +25,7 @@ namespace HackYeah.Models
         }
         public string city { get; set; }
         public string iata { get; set; }
+        public int cityOrderNumber { get; set; }
         public List<string> tags;
 
         

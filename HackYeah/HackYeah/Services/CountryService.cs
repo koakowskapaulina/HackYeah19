@@ -23,18 +23,60 @@ namespace HackYeah.Services
         public string beach = "beach";
         public string seesighting = "seesighting";
         public string rest = "rest";
-        
+
         public List<AirportsInCountries> ProcessCityTags(List<AirportsInCountries> countries)
         {
-            foreach(var country in countries)
+            foreach (var country in countries)
             {
+                switch (country.country.ToUpper())
+                {
+                    case ("INDIA"):
+                        country.countryOrderNumber = 2;
+                        break;
+                    case ("JAPAN"):
+                        country.countryOrderNumber = 3;
+                        break;
+                    case ("POLAND"):
+                        country.countryOrderNumber = 4;
+                        break;
+                    case ("ISRAEL"):
+                        country.countryOrderNumber = 1;
+                        break;
+                    case ("USA"):
+                        country.countryOrderNumber = 5;
+                        break;
+                    default:
+                        country.countryOrderNumber = 6;
+                        break;
+
+                }
+
                 foreach (var city in country.cities)
                 {
+                    switch (city.city.ToUpper())
+                    {
+                        case ("WARSAW"):
+                            city.cityOrderNumber = 0;
+                            break;
+                        case ("NEW YORK"):
+                            city.cityOrderNumber = 0;
+                            break;
+                        case ("NEW YORK (ALL)"):
+                            city.cityOrderNumber = 1;
+                            break;
+                        default:
+                            city.cityOrderNumber = 2;
+                            break;
+                    }
                     city.tags = AssignTags(city.city);
                 }
             }
+            foreach (var country in countries)
+            {
+                country.cities = country.cities.OrderBy(c => c.cityOrderNumber).Cast<Airports>().ToList();
+            }
 
-            return countries;
+            return countries.OrderBy(c => c.countryOrderNumber).Cast<AirportsInCountries>().ToList();
         }
 
         #region hey, dont look here
@@ -43,15 +85,15 @@ namespace HackYeah.Services
             switch (country.ToUpper())
             {
                 case "NICE":
-                    return new List<string>(new string[] {near, beach });
+                    return new List<string>(new string[] { near, beach });
                 case "PARIS":
                     return new List<string>(new string[] { near, beach, seesighting, rest });
                 case "BERLIN":
                     return new List<string>(new string[] { near, seesighting, rest });
                 case "FRANKFURT":
-                    return new List<string>(new string[] { near, seesighting, rest  });
+                    return new List<string>(new string[] { near, seesighting, rest });
                 case "MUNICH":
-                    return new List<string>(new string[] { near, seesighting, rest  });
+                    return new List<string>(new string[] { near, seesighting, rest });
                 case "ATHENS":
                     return new List<string>(new string[] { near, seesighting, rest, hot, beach });
                 case "BUDAPEST":
@@ -67,11 +109,11 @@ namespace HackYeah.Services
                 case "GDANSK":
                     return new List<string>(new string[] { near, seesighting, rest, beach });
                 case "WARSAW":
-                    return new List<string>(new string[] { near, seesighting, rest,  });
+                    return new List<string>(new string[] { near, seesighting, rest, });
                 case "WROCLAW":
-                    return new List<string>(new string[] { near, seesighting, rest,  });
+                    return new List<string>(new string[] { near, seesighting, rest, });
                 case "MOSCOW (ALL)":
-                    return new List<string>(new string[] { near, seesighting, rest,  });
+                    return new List<string>(new string[] { near, seesighting, rest, });
                 case "SINGAPORE":
                     return new List<string>(new string[] { away, seesighting, rest, beach, hot });
                 case "BARCELONA":
@@ -107,9 +149,9 @@ namespace HackYeah.Services
 
                 default:
                     return new List<string>();
-                    
+
             }
-                        
+
         }
         #endregion
     }
