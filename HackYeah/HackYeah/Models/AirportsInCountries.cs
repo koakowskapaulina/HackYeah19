@@ -10,6 +10,7 @@ namespace HackYeah.Models
         public string country { get; set; }
         public int countryOrderNumber { get; set; }
         public List<Airports> cities;
+        public string annualTemp { get; set; }
         
         public AirportsInCountries()
         {            

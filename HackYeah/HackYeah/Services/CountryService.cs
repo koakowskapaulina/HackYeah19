@@ -32,21 +32,27 @@ namespace HackYeah.Services
                 {
                     case ("INDIA"):
                         country.countryOrderNumber = 2;
+                        country.annualTemp = "23.65";
                         break;
                     case ("JAPAN"):
                         country.countryOrderNumber = 3;
+                        country.annualTemp = "11.15";
                         break;
                     case ("POLAND"):
                         country.countryOrderNumber = 4;
+                        country.annualTemp = "7.85";
                         break;
                     case ("ISRAEL"):
                         country.countryOrderNumber = 1;
+                        country.annualTemp = "19.20";
                         break;
                     case ("USA"):
                         country.countryOrderNumber = 5;
+                        country.annualTemp = "8.55";
                         break;
                     default:
                         country.countryOrderNumber = 6;
+                        country.annualTemp = "no data";
                         break;
 
                 }
